@@ -1,0 +1,11 @@
+[Unit]
+Description=SSUnitedCoin daemon serivce
+After=network.target
+
+[Service]
+Type=simple
+User=SSUnitedCoin
+ExecStart=/opt/SSUnitedCoin/SSUnitedCoind
+
+[Install]
+WantedBy=multi-user.target

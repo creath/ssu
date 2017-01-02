@@ -1,0 +1,2 @@
+debian/bin/SSUnitedCoind usr/bin
+src/SSUnitedCoind usr/lib/SSUnitedCoin

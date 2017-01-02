@@ -1,0 +1,68 @@
+#!/bin/sh
+
+# PROVIDE: SSUnitedCoin
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+
+#
+# Add the following lines to /etc/rc.conf.local or /etc/rc.conf
+# to enable this service:
+#
+# SSUnitedCoin_enable (bool): Set to NO by default. Set this variable to YES if you want to enable SSUnitedCoin service.
+# SSUnitedCoin_config (path): Set to /usr/local/etc/SSUnitedCoin.conf by default.
+# SSUnitedCoin_user:  The user account SSUnitedCoin daemon runs as. It uses 'root' user by default.
+# SSUnitedCoin_group: The group account SSUnitedCoin daemon runs as. It uses 'wheel' group by default.
+# SSUnitedCoin_datadir (str): Default to "/var/db/SSUnitedCoin". Base data directory.
+
+. /etc/rc.subr
+
+name=SSUnitedCoin
+rcvar=SSUnitedCoin_enable
+
+: ${SSUnitedCoin_enable:=NO}
+: ${SSUnitedCoin_config=/usr/local/etc/SSUnitedCoin.conf}
+: ${SSUnitedCoin_datadir=/var/db/SSUnitedCoin}
+: ${SSUnitedCoin_user="root"}
+: ${SSUnitedCoin_group="wheel"}
+
+required_files=${SSUnitedCoin_config}
+command=/usr/local/bin/SSUnitedCoind
+SSUnitedCoin_chdir=${SSUnitedCoin_datadir}
+pidfile="${SSUnitedCoin_datadir}/SSUnitedCoind.pid"
+stop_cmd=SSUnitedCoin_stop
+command_args="-conf=${SSUnitedCoin_config} -datadir=${SSUnitedCoin_datadir} -daemon -pid=${pidfile}"
+start_precmd="${name}_prestart"
+
+SSUnitedCoin_create_datadir()
+{
+	echo "Creating data directory"
+	eval mkdir -p ${SSUnitedCoin_datadir}
+	[ $? -eq 0 ] && chown -R ${SSUnitedCoin_user}:${SSUnitedCoin_group} ${SSUnitedCoin_datadir}
+}
+
+SSUnitedCoin_prestart()
+{
+	if [ ! -d "${SSUnitedCoin_datadir}/." ]; then
+		SSUnitedCoin_create_datadir || return 1
+	fi
+}
+
+SSUnitedCoin_requirepidfile()
+{
+	if [ ! "0`check_pidfile ${pidfile} ${command}`" -gt 1 ]; then
+		echo "${name} not running? (check $pidfile)."
+		exit 1
+	fi
+}
+
+SSUnitedCoin_stop()
+{
+    SSUnitedCoin_requirepidfile
+
+	echo "Stopping ${name}."
+	eval ${command} -conf=${SSUnitedCoin_config} -datadir=${SSUnitedCoin_datadir} stop
+	wait_for_pids ${rc_pid}
+}
+
+load_rc_config $name
+run_rc_command "$1"

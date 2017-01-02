@@ -1,0 +1,13 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=SSUnitedCoin
+Comment=SSUnitedCoin P2P Cryptocurrency
+Comment[ru]=SSUnitedCoin, P2P криптовалюта
+Comment[fr]=SSUnitedCoin, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=SSUnitedCoin, eşten eşe kriptografik sanal para birimi
+Exec=/usr/bin/SSUnitedCoin-qt
+Terminal=false
+Type=Application
+Icon=/usr/share/pixmaps/SSUnitedCoin80.xpm
+MimeType=x-scheme-handler/SSUnitedCoin;
+Categories=Office;

@@ -1,0 +1,5 @@
+SSUnitedCoin-qt usr/bin
+share/pixmaps/SSUnitedCoin32.xpm usr/share/pixmaps
+share/pixmaps/SSUnitedCoin80.xpm usr/share/pixmaps
+debian/SSUnitedCoin-qt.desktop usr/share/applications
+debian/SSUnitedCoin-qt.protocol usr/share/kde4/services/
